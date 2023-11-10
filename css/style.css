@@ -16,7 +16,7 @@ body {
 }
 
 .logo {
-  margin-top: 14px; /* Ajuste conforme necessário */
+  margin-top: 7px; /* Ajuste conforme necessário */
 }
 
 .logo-img {
@@ -29,7 +29,7 @@ body {
 .container {
   position: absolute;
   transform: translate(-50%, -50%);
-  top: 60%;
+  top: 70%;
   left: 50%;
   width: 90vw;
   max-width: 37.5em;
