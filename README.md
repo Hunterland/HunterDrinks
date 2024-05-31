@@ -35,4 +35,4 @@ Hunter Drinks é uma aplicação inovadora que não apenas procura o coquetel de
 Você pode visualizar o layout do projeto através [DESSE LINK](https://www.figma.com/file/cjGkJUgMNNUWR6u4oOoP1R/HunterDrinks?type=design&node-id=10%3A29&mode=design&t=FGcPAqbSZpxU2NMp-1). É necessário ter conta no [Figma](https://figma.com) para acessá-lo.
 
 
-Criado por Alan Barroncas
+Desenvolvido por [Alan Barroncas](https://linkedin.com/in/alan-barroncas) 🚀
