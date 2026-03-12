@@ -1,0 +1,1 @@
+<!-- Configuração base (Host, DB, user, pass) -->
