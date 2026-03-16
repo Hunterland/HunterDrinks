@@ -11,7 +11,7 @@ const traduzirInglesParaPortugues = (termoEmIngles) => {
     strInstructions: "Instruções",
     strIngredient: "Ingrediente",
     strMeasure: "Medida",
-    // Adicione mais termos conforme necessário
+    
   };
 
   return traducoes[termoEmIngles] || termoEmIngles;
@@ -62,10 +62,77 @@ let getInfo = () => {
           let listItem = document.createElement("li");
           listItem.innerText = traduzirInglesParaPortugues(item);
           ingredientsCon.appendChild(listItem);
-        });
-      })
-      .catch(() => {
-        result.innerHTML = `<h3 class="msg">Por favor, insira uma entrada válida</h3>`;
+        }); // ← FECHA FOREACH AQUI!
+
+        // ===== BOTÃO FAVORITAR (ÚNICO) =====
+        let favBtn = document.createElement("button");
+        favBtn.innerText = "❤️ Favoritar";
+        favBtn.style.cssText = `
+          display: block !important;
+          margin: 25px auto 0;
+          padding: 15px 35px;
+          font-size: 18px;
+          font-weight: bold;
+          background: linear-gradient(45deg, #8cb479, #6aa360);
+          color: white;
+          border: none;
+          border-radius: 30px;
+          cursor: pointer;
+          box-shadow: 0 6px 20px rgba(140,180,121,0.4);
+          transition: all 0.3s;
+        `;
+        favBtn.onmouseover = () => {
+          favBtn.style.transform = "scale(1.05)";
+          favBtn.style.boxShadow = "0 8px 25px rgba(140,180,121,0.6)";
+        };
+        favBtn.onclick = async () => {
+          favBtn.disabled = true;
+          favBtn.innerText = "Salvando...";
+
+          try {
+            const res = await fetch("http://localhost:8000/favorites", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                drink_id: myDrink.idDrink,
+                name: myDrink.strDrink,
+                thumb: myDrink.strDrinkThumb,
+                instructions: myDrink.strInstructions,
+              }),
+            });
+
+            let data;
+            try {
+              data = await res.json();
+            } catch (jsonErr) {
+              throw new Error(
+                `Resposta inválida: ${res.status} ${res.statusText}`,
+              );
+            }
+
+            if (!res.ok) {
+              console.log("Erro PHP completo:", data); // ← VEJA AQUI!
+              throw new Error(data.error || `Erro ${res.status}`);
+            }
+
+            favBtn.innerText = "⭐ Salvo! (ID: " + data.id + ")";
+            favBtn.style.background = "#95bd88";
+            alert(`✅ ${myDrink.strDrink} salvo! ID: ${data.id}`);
+          } catch (err) {
+            console.error("Erro detalhado:", err);
+            favBtn.disabled = false;
+
+            if (err.message.includes("já está nos favoritos")) {
+              favBtn.innerText = "💚 Já é favorito!";
+              favBtn.style.background = "#95bd88";
+            } else {
+              favBtn.innerText = "❤️ Tentar novamente";
+              alert("❌ " + err.message);
+            }
+          }
+        };
+
+        result.appendChild(favBtn); 
       });
   }
 };
